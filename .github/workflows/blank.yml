@@ -21,12 +21,16 @@ jobs:
       - uses: actions/checkout@v4
       - name: Run a multi-line script
         run: |
-          podman run --platform linux/amd64 --rm -it --entrypoint=sh node:20 -c "/usr/bin/git clone --depth=1 -b pnpm https://github.com/benoitf/desktop && cd desktop && corepack enable pnpm && COREPACK_ENABLE_DOWNLOAD_PROMPT=0 pnpm install --frozen-lockfile  --store-dir /pnpm-store2 --reporter ndjson"
+          podman run --platform linux/amd64 --rm -it --entrypoint=sh node:20 -c "/usr/bin/git clone --depth=1 -b pnpm https://github.com/benoitf/desktop && cd desktop && corepack enable pnpm && COREPACK_ENABLE_DOWNLOAD_PROMPT=0 pnpm install --frozen-lockfile  --store-dir /pnpm-store2"
 
   arm64:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+        
       - name: Run a multi-line script
         run: |
           podman run --platform linux/arm64 --rm -it --entrypoint=sh node:20 -c "/usr/bin/git clone --depth=1 -b pnpm https://github.com/benoitf/desktop && cd desktop && corepack enable pnpm && COREPACK_ENABLE_DOWNLOAD_PROMPT=0 pnpm install --frozen-lockfile  --store-dir /pnpm-store2 --reporter ndjson"
